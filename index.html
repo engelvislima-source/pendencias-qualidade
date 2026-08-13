@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2f7d43" />
+  <title>Pendências da Qualidade</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Pendências da Qualidade</h1>
+      <p>Vistoria rápida • comunicação imediata</p>
+    </div>
+    <button class="icon-btn" id="btnHome" aria-label="Início">⌂</button>
+  </header>
+
+  <main class="app-shell">
+    <section id="homeView" class="view active">
+      <div class="hero">
+        <div>
+          <span class="eyebrow">QUALIDADE DE OBRAS</span>
+          <h2>Registre e envie as pendências antes de sair da obra.</h2>
+          <p>Fotos, localização, serviço, ação corretiva e status em um único fluxo.</p>
+        </div>
+        <button class="primary big" id="btnNovaVistoria">+ Nova vistoria</button>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="section-title">
+        <h3>Vistorias recentes</h3>
+        <div class="home-actions">
+          <button class="ghost" id="btnExportarBackup">Exportar backup</button>
+          <button class="ghost danger-text" id="btnLimparTudo">Excluir todos os arquivos</button>
+        </div>
+      </div>
+      <div id="listaVistorias" class="cards"></div>
+    </section>
+
+    <section id="vistoriaView" class="view">
+      <div class="step-header">
+        <button class="back" id="btnVoltarHome">←</button>
+        <div>
+          <span class="eyebrow">ETAPA 1</span>
+          <h2>Dados da vistoria</h2>
+        </div>
+      </div>
+
+      <form id="formVistoria" class="panel form-grid">
+        <label>Obra
+          <input id="obra" type="text" placeholder="Digite o nome da obra" required />
+        </label>
+
+        <label>Data
+          <input id="dataVistoria" type="date" required />
+        </label>
+
+        <label>Responsável pela vistoria
+          <input id="responsavel" type="text" placeholder="Ex.: Elvis Lima" required />
+        </label>
+
+        <label>Prazo para correção
+          <input id="prazoCorrecao" type="date" />
+        </label>
+
+        <label>Bloco
+          <input id="blocoBase" type="text" placeholder="Ex.: Bloco 03" />
+        </label>
+
+        <label>Apartamento / Local
+          <input id="localBase" type="text" placeholder="Ex.: Apto 301 / Área externa" />
+        </label>
+
+        <label class="span-2">Observação geral
+          <textarea id="obsGeral" rows="3" placeholder="Opcional"></textarea>
+        </label>
+
+        <button type="submit" class="primary span-2">Iniciar vistoria</button>
+      </form>
+    </section>
+
+    <section id="registroView" class="view">
+      <div class="step-header">
+        <button class="back" id="btnVoltarVistoria">←</button>
+        <div>
+          <span class="eyebrow">ETAPA 2</span>
+          <h2>Registrar pendência</h2>
+          <p id="vistoriaAtualInfo"></p>
+        </div>
+      </div>
+
+      <form id="formPendencia" class="panel form-grid">
+        <label>Bloco
+          <input id="pBloco" type="text" placeholder="Ex.: Bloco 03" required />
+        </label>
+
+        <label>Apartamento / Local
+          <input id="pLocal" type="text" placeholder="Ex.: Apto 301" required />
+        </label>
+
+        <label>Serviço
+          <select id="pServico" required>
+            <option value="">Selecione</option>
+            <option>Pintura interna</option>
+            <option>Pintura externa</option>
+            <option>Cerâmica</option>
+            <option>Rejunte</option>
+            <option>P.U.</option>
+            <option>Gesso cola</option>
+            <option>Gesso acartonado</option>
+            <option>Estuque</option>
+            <option>Porta de madeira</option>
+            <option>Esquadria</option>
+            <option>Serralheria</option>
+            <option>Alvenaria</option>
+            <option>Reboco e requadração</option>
+            <option>Infra I</option>
+            <option>Infra II</option>
+            <option>Prumada</option>
+            <option>Impermeabilização</option>
+            <option>Louças e metais</option>
+            <option value="__outro__">Outro serviço...</option>
+          </select>
+        </label>
+
+        <label id="servicoOutroWrap" class="hidden">Outro serviço
+          <input id="pServicoOutro" type="text" />
+        </label>
+
+        <label class="span-2">Fotos da pendência <span class="hint">(até 4)</span>
+<div class="photo-actions">
+<button type="button" class="photo-btn camera" id="btnCamera">📷 Tirar foto</button>
+<button type="button" class="photo-btn gallery" id="btnGaleria">🖼️ Escolher da galeria</button>
+</div>
+<div class="photo-counter" id="photoCounter">0/4 fotos</div>
+<div id="previewFotos" class="photo-grid"></div>
+<input id="cameraInput" class="file-hidden" type="file" accept="image/*" capture="environment">
+<input id="galleryInput" class="file-hidden" type="file" accept="image/*" multiple>
+</label>
+
+        <label class="span-2">Pendência identificada
+          <textarea id="pPendencia" rows="3" placeholder="Ex.: Falha de acabamento na parede." required></textarea>
+        </label>
+
+        <label class="span-2">Ação corretiva
+          <textarea id="pAcao" rows="3" placeholder="Ex.: Regularizar a superfície e refazer a pintura." required></textarea>
+        </label>
+
+        <label>Prioridade
+          <select id="pPrioridade">
+            <option>Baixa</option>
+            <option selected>Média</option>
+            <option>Alta</option>
+          </select>
+        </label>
+
+        <label>Status
+          <select id="pStatus">
+            <option selected>Pendente</option>
+            <option>Em correção</option>
+            <option>Corrigido</option>
+            <option>Reprovado</option>
+          </select>
+        </label>
+
+        <button type="submit" class="primary span-2">Salvar pendência</button>
+      </form>
+
+      <div class="section-title">
+        <h3>Pendências registradas</h3>
+        <span class="counter" id="contadorPendencias">0</span>
+      </div>
+      <div id="listaPendencias" class="cards"></div>
+
+      <div class="sticky-actions">
+        <button class="secondary" id="btnSalvarSair">Salvar e sair</button>
+        <button class="primary" id="btnFinalizar">Finalizar vistoria</button>
+      </div>
+    </section>
+
+    <section id="resumoView" class="view">
+      <div class="step-header">
+        <button class="back" id="btnVoltarRegistro">←</button>
+        <div>
+          <span class="eyebrow">ETAPA 3</span>
+          <h2>Resumo para envio</h2>
+        </div>
+      </div>
+
+      <div id="resumoRelatorio" class="report"></div>
+
+      <div class="share-grid">
+        <button class="whatsapp" id="btnWhatsapp">Compartilhar no WhatsApp</button>
+        <button class="secondary" id="btnCompartilhar">Compartilhar resumo</button>
+        <button class="primary" id="btnImprimir">Gerar PDF / Imprimir</button>
+        <button class="ghost" id="btnNovaAposFinalizar">Nova vistoria</button>
+      </div>
+    </section>
+  </main>
+
+  <template id="tplPendencia">
+    <article class="pend-card">
+      <div class="thumbs"></div>
+      <div class="pend-content">
+        <div class="pend-head">
+          <strong class="servico"></strong>
+          <span class="status-pill"></span>
+        </div>
+        <p class="local"></p>
+        <p class="texto"></p>
+        <p class="acao"></p>
+        <div class="pend-actions">
+          <button class="mini btnEditar">Editar</button><button class="mini btnDuplicar">Duplicar</button>
+          <button class="mini btnStatus">Alterar status</button>
+          <button class="mini danger btnExcluir">Excluir</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
